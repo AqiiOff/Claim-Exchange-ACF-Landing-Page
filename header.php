@@ -1,6 +1,8 @@
 <?php
 /**
- * The template for displaying header.
+ * The template for displaying the header
+ *
+ * This is the template that displays all of the <head> section, opens the <body> tag and adds the site's header.
  *
  * @package HelloElementor
  */
@@ -8,44 +10,35 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
-$site_name = get_bloginfo( 'name' );
-$tagline   = get_bloginfo( 'description', 'display' );
-$header_nav_menu = wp_nav_menu( [
-	'theme_location' => 'menu-1',
-	'fallback_cb' => false,
-	'echo' => false,
-] );
+
+$viewport_content = apply_filters( 'hello_elementor_viewport_content', 'width=device-width, initial-scale=1' );
+$enable_skip_link = apply_filters( 'hello_elementor_enable_skip_link', true );
+$skip_link_url = apply_filters( 'hello_elementor_skip_link_url', '#content' );
 ?>
+<!doctype html>
+<html <?php language_attributes(); ?>>
+<head>
+	<meta charset="<?php bloginfo( 'charset' ); ?>">
+	<meta name="viewport" content="<?php echo esc_attr( $viewport_content ); ?>">
+	<link rel="profile" href="https://gmpg.org/xfn/11">
+	<link href="https://fonts.cdnfonts.com/css/poetsen-one" rel="stylesheet">
+	<link href="/assets/fonts/Lato-Regular.ttf" rel="stylesheet">
+	<link rel="stylesheet" href="style.css">
+	<script src="/assets/js/accordion.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	<?php wp_head(); ?>
+</head>
+<body <?php body_class(); ?>>
 
-<header id="site-header" class="site-header" role="banner">
-
-	<div class="site-branding">
-		<?php
-		if ( has_custom_logo() ) {
-			the_custom_logo();
-		} elseif ( $site_name ) {
-			?>
-			<h1 class="site-title">
-				<a href="<?php echo esc_url( home_url( '/' ) ); ?>" title="<?php echo esc_attr__( 'Home', 'hello-elementor' ); ?>" rel="home">
-					<?php echo esc_html( $site_name ); ?>
-				</a>
-			</h1>
-			<p class="site-description">
-				<?php
-				if ( $tagline ) {
-					echo esc_html( $tagline );
-				}
-				?>
-			</p>
-		<?php } ?>
-	</div>
-
-	<?php if ( $header_nav_menu ) : ?>
-		<nav class="site-navigation">
-			<?php
-			// PHPCS - escaped by WordPress with "wp_nav_menu"
-			echo $header_nav_menu; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			?>
-		</nav>
-	<?php endif; ?>
+<?php wp_body_open(); ?>
+<?php
+$logo = get_field('logo');
+?>
+<div id="container">
+<header>
+    <div class="logo"><img class="logo_img img-responsive" href="<?php echo esc_url( $skip_link_url ); ?>" src="<?php echo $logo['url']; ?>" alt="<?php echo $logo['alt']; ?>"></div>
+    <div class="nav"></div>
 </header>
+
+
